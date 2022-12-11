@@ -1,0 +1,220 @@
+GET /_cat/indices
+
+
+
+GET /_search
+{
+    "query": {
+        "match_all": {}
+    }
+}
+
+
+
+GET /_search
+{
+  "query": {
+    "match_all": { "boost" : 1.2 }
+  }
+}
+
+
+
+GET /_search
+{
+  "query": {
+    "match_none": {}
+  }
+}
+
+
+
+GET /titanic/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "Age": "22" } }
+      ],
+      "must_not": [
+        { "match": { "Sex": "male" } }
+      ]
+    }
+  }
+}
+
+
+
+GET /titanic/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Heikkinen, Miss. Laina",
+      "fields": [ "Name"]
+    }
+  }
+}
+
+
+
+GET /titanic/_search
+{
+  "query": {
+    "must_match": {
+      "query": "Heikkinen, Miss. Laina",
+      "fields": [ "Name"]
+    }
+  }
+}
+
+
+
+
+GET _search
+{
+  "query": {
+    "constant_score": {
+      "filter": {
+        "term": {
+          "Sex": "male"
+        }
+      }
+    }
+  }
+}
+
+
+
+
+GET /titanic/_search
+{
+    "query" : {
+        "range" : {
+            "Age" : {
+                "gte" : 50
+            }
+        }
+
+
+
+    }
+}
+
+
+
+
+GET titanic/_search
+{
+  "_source": ["Age","Name","Sex"],
+  "size": 20,
+  "min_score": 0.5,
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [],
+      "should": [],
+      "must_not": []
+    }
+  }
+}
+
+
+
+
+GET /titanic/_mapping
+
+GET /titanic/_mapping
+
+
+
+GET /titanic/_search
+{
+  "query": {"match": {
+    "Name": "braund"
+  }}
+}
+
+
+
+
+
+GET /titanic/_search
+{
+  "query": {
+    "match_phrase": {
+      "Name": "Braund, Mr. Owen Harris"
+    }
+  }
+}
+
+
+
+
+
+GET titanic/_search
+{
+  "_source": ["Age","Name","Sex"],
+  "size": 20,
+  "min_score": 0.5,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "Name": "Heikkinen, Miss. Laina"
+          }
+        },
+          {
+          "match": {
+            "Age": "26"
+          }
+        }
+        
+        ],
+      "filter": [],
+      "should": [],
+      "must_not": []
+    }
+  }
+}
+
+
+
+
+GET titanic/_search
+{
+  "_source": ["Age","Name","Sex"],
+  "size": 20,
+  "min_score": 0.5,
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [],
+      "should": [{
+          "match": {
+            "Name": "Heikkinen, Miss. Laina"
+          }
+        },
+          {
+          "match": {
+            "Age": "26"
+          }
+        }
+        ],
+      "must_not": []
+    }
+  }
+}
+
+
+
+
+GET /titanic/_search
+{
+  "query": {
+    "query_string": {
+      "query": "(Heikkinen, Miss. Laina) OR (Moran, Mr. James)",
+      "default_field": "Name"
+    }
+  }
+}
